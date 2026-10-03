@@ -20,7 +20,9 @@ port with `PORT=4414 npm run serve`. Stop a preview with Ctrl+C.
 
 Home includes five complete testimonials from the shared approved quote source.
 The carousel displays only each quote, with no author, affiliation, file, or
-folder labels. Previous and Next controls and arrow keys advance it manually;
+folder labels. Each complete quote is italicized and enclosed in quotation marks.
+Previous and Next controls sit below the title and above the quote, keeping their
+position stable as quote lengths vary. The controls and arrow keys advance it manually;
 it never rotates automatically. All quotes are pre-rendered and remain readable
 without JavaScript.
 

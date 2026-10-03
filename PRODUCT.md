@@ -8,7 +8,7 @@ A minimal standalone version of Joey Wilkes’s Imperial 2.0 portfolio, for recr
 
 Three supplied websites on a portfolio page. The Queens AI evaluation website is featured on Home and first in Portfolio, using the shared project copy. The Experience page links to certifications and the full résumé; work history appears only in the résumé. Seven Final Results PDFs each have their own static subpage; Reservoir Thinning is first in the academic archive. Projects1 links to the academic code archive. The digital résumé preserves source roles, dates, education, contact details, and its QR destination. Responsibilities sit in native disclosures, collapsed by default, with explicit Show/Hide labels and chevrons. All bullets remain pre-rendered and expand for printing. No blogs, sample outlines, placeholder claims, or empty portfolio entries.
 
-Home includes five complete recommendations from the shared approved quote source. Each slide displays only its quote. Previous/Next buttons and arrow keys advance the carousel manually, with no timed rotation. All five quotes remain pre-rendered and readable without JavaScript.
+Home includes five complete recommendations from the shared approved quote source. Each slide displays only its complete quote, italicized and enclosed in quotation marks. Controls sit below the Testimonials title and above the quote, keeping their position stable across different quote lengths. Previous/Next buttons and arrow keys advance the carousel manually, with no timed rotation. All five quotes remain pre-rendered and readable without JavaScript.
 
 ## Visual direction
 

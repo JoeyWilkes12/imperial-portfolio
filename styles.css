@@ -86,20 +86,18 @@ p { max-width: 70ch; }
 .arrow { width: 18px; height: 18px; display: inline-block; flex: none; }
 .home-sections { padding-block: 1.5rem 3rem; }
 .testimonials { padding-block: 1rem 4rem; }
-.testimonials-layout { display: grid; grid-template-columns: .65fr 1.35fr; gap: 3rem; border-top: 1px solid var(--ink); padding-top: 2.5rem; }
+.testimonials-layout { display: grid; grid-template-columns: 1fr; gap: 1.5rem; border-top: 1px solid var(--ink); padding-top: 2.5rem; }
 .testimonials h2 { margin: 0; font-size: 1.8rem; }
 .testimonial-carousel { min-width: 0; }
-.testimonial-slide blockquote { margin: 0; font-size: clamp(1.05rem, 1.5vw, 1.2rem); line-height: 1.7; }
+.testimonial-slide blockquote { margin: 0; max-width: 70ch; font-size: clamp(1.05rem, 1.5vw, 1.2rem); font-style: italic; line-height: 1.7; }
 .testimonial-slide p { margin: 0 0 1.2rem; }
+.testimonial-slide p:last-child { margin-bottom: 0; }
 .no-js .testimonial-slide + .testimonial-slide { margin-top: 2rem; border-top: 1px solid var(--rule); padding-top: 2rem; }
-.testimonial-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: .5rem; }
+.testimonial-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
 .testimonial-controls[hidden] { display: none; }
 .testimonial-controls button { min-width: 5.5rem; min-height: 44px; padding: .5rem .8rem; border: 1px solid var(--rule); color: var(--ink); background: var(--field); cursor: pointer; }
 .testimonial-controls button:hover { border-color: var(--ink); }
 .testimonial-position { color: var(--pencil); font-size: .85rem; }
-@media (max-width: 800px) {
-  .testimonials-layout { grid-template-columns: 1fr; gap: 1.5rem; }
-}
 .link-row { display: grid; grid-template-columns: 1fr 1.1fr auto; gap: 2rem; padding-block: 1.8rem; align-items: center; border-bottom: 1px solid var(--rule); text-decoration: none; }
 .link-row h2 { font-size: 1.8rem; margin: 0; }
 .link-row p { margin: 0; color: var(--pencil); }
