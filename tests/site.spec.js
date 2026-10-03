@@ -1,10 +1,20 @@
 import { expect, test } from "@playwright/test";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readFile } from "node:fs/promises";
 
 const portfolioUrls = [
   "https://joeywilkes12.github.io/queens-model-assessment/#/executive-summary",
   "https://joeywilkes12.github.io/agent-skills-resource-library/",
   "https://joeywilkes12.github.io/4amj-landing-page-01/"
+];
+const queensProject = {
+  category: "AI Evals",
+  title: "How well can AI models play Queens?",
+  description: "Extensive computational & scientific assessment of various AI models ability to play logical puzzle Queens",
+  url: portfolioUrls[0]
+};
+const otherWebsiteProjects = [
+  { category: "AI agents", title: "Agent Skills Resource Library", description: "Resources and guides for building, troubleshooting, and evaluating AI agent skills.", url: portfolioUrls[1] },
+  { category: "Family history", title: "Whiteley Reunion 2026", description: "A reunion hub for genealogy, schedules, food planning, and shared files.", url: portfolioUrls[2] }
 ];
 const certificateUrl = "https://joeywilkes12.github.io/certifications-site/";
 // Source contracts: the seven archived PDF titles and the downloaded résumé.
@@ -47,6 +57,18 @@ async function assertNavigationDestinations(page, path) {
   const home = page.locator(".mobile-nav nav").getByRole("link", { name: "Home", exact: true, includeHidden: true });
   if (path === "/") await expect(home).toHaveAttribute("aria-current", "page");
   else await expect(home).not.toHaveAttribute("aria-current", "page");
+}
+
+async function assertQueensProject(card) {
+  await expect(card).toBeVisible();
+  await expect(card.locator("p")).toHaveText([queensProject.category, queensProject.description]);
+  await expect(card.getByRole("heading", { level: 2, name: queensProject.title, exact: true })).toBeVisible();
+  const link = card.getByRole("link", { name: "Visit website", exact: true });
+  await expect(link).toHaveAttribute("href", queensProject.url);
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /noopener/);
+  await expect(link.locator("svg.arrow")).toHaveAttribute("aria-hidden", "true");
+  await expect(link.locator("svg.arrow path")).toHaveAttribute("d", "M6 18 18 6M6 6h12v12");
 }
 
 async function assertNoOverflow(page, route) {
@@ -306,7 +328,23 @@ test("Home is the first hamburger destination and reaches the homepage from a ne
   await expect(page.getByRole("navigation", { name: "Mobile navigation", exact: true }).getByRole("link", { name: "Home", exact: true })).toHaveAttribute("aria-current", "page");
 });
 
-test("portfolio includes exactly the three requested websites", async ({ page }) => {
+test("home features the Queens project from the shared website content without report metadata", async ({ page }) => {
+  const websiteContent = JSON.parse(await readFile(new URL("../content/websites.json", import.meta.url), "utf8"));
+  expect(websiteContent.projects).toEqual([queensProject, ...otherWebsiteProjects]);
+  await page.goto("/");
+  const main = page.getByRole("main");
+  const featured = main.locator(".featured");
+  await expect(featured).toHaveCount(1);
+  await assertQueensProject(featured);
+  await expect(main).not.toContainText("Reservoir Thinning");
+  await expect(main).not.toContainText("Featured research");
+  await expect(main).not.toContainText("April 15, 2022");
+  await expect(main).not.toContainText(/\b\d+\s+pages\b/i);
+  await expect(featured.locator(".metadata")).toHaveCount(0);
+  await expect(main.locator('a[href*="academic/reservoir-thinning/"]')).toHaveCount(0);
+});
+
+test("portfolio includes exactly the three requested websites and the updated Queens project", async ({ page }) => {
   await page.goto("/portfolio/");
   const links = page.getByRole("main").getByRole("link", { name: "Visit website", exact: true });
   await expect(links).toHaveCount(3);
@@ -314,6 +352,15 @@ test("portfolio includes exactly the three requested websites", async ({ page })
   for (const link of await links.all()) {
     await expect(link).toHaveAttribute("target", "_blank");
     await expect(link).toHaveAttribute("rel", /noopener/);
+  }
+  const projects = page.getByRole("main").locator(".project-item");
+  await expect(projects).toHaveCount(3);
+  await assertQueensProject(projects.nth(0));
+  for (const [index, project] of otherWebsiteProjects.entries()) {
+    const card = projects.nth(index + 1);
+    await expect(card.locator("p")).toHaveText([project.category, project.description]);
+    await expect(card.getByRole("heading", { level: 2, name: project.title, exact: true })).toBeVisible();
+    await expect(card.getByRole("link", { name: "Visit website", exact: true })).toHaveAttribute("href", project.url);
   }
 });
 
@@ -349,6 +396,9 @@ test("Experience shows only certifications and a link to the full résumé", asy
 test("academic archive prioritizes Reservoir Thinning and exposes all seven sourced reports", async ({ page, request }) => {
   await page.goto("/academic/");
   const reportLinks = page.getByRole("main").locator('a[href]').filter({ hasText: /Read the report|Reservoir Thinning|RISK Game Prediction|General Conference NLP|Predicting Movie Revenue|Non-Trivial Evasion|Non-Trivial Pursuit|Childhood Computational Thinking/ });
+  await expect(reportLinks).toHaveCount(7);
+  await expect(page.locator(".academic-feature").getByRole("heading", { level: 2, name: "Reservoir Thinning", exact: true })).toBeVisible();
+  await expect(reportLinks.first()).toHaveAttribute("href", "reservoir-thinning/");
   const destinations = await reportLinks.evaluateAll(elements => elements.map(element => new URL(element.href).pathname));
   expect(destinations).toEqual(reports.map(report => `/academic/${report.slug}/`));
   await expect(page.getByRole("link", { name: "Explore Projects1", exact: true })).toHaveAttribute("href", "https://github.com/JoeyWilkes12/Projects1");
@@ -459,19 +509,21 @@ test("reduced motion disables the animated canvas", async ({ page }, testInfo) =
   await expect(page.getByRole("heading", { name: "Joey Wilkes", level: 1 })).toBeVisible();
 });
 
-test("capture home, certifications, academic archive, and résumé for visual review", async ({ page }, testInfo) => {
+test("capture home, portfolio, certifications, academic archive, and résumé for visual review", async ({ page }, testInfo) => {
   test.skip(process.env.UPDATE_SCREENSHOTS !== "1", "Set UPDATE_SCREENSHOTS=1 to refresh visual review artifacts.");
   await mkdir("output/playwright", { recursive: true });
   await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
-  for (const [name, path] of [["home", "/"], ["experience", "/experience/"], ["academic", "/academic/"], ["resume", "/resume/"]]) {
+  for (const [name, path] of [["home", "/"], ["portfolio", "/portfolio/"], ["experience", "/experience/"], ["academic", "/academic/"], ["resume", "/resume/"]]) {
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     await page.screenshot({ path: `output/playwright/${name}-${testInfo.project.name}.png`, fullPage: true });
   }
   await page.emulateMedia({ colorScheme: "dark" });
-  await page.goto("/experience/");
-  await assertTheme(page, "dark");
-  await page.screenshot({ path: `output/playwright/dark-experience-${testInfo.project.name}.png`, fullPage: true });
+  for (const [name, path] of [["experience", "/experience/"], ["portfolio", "/portfolio/"]]) {
+    await page.goto(path);
+    await assertTheme(page, "dark");
+    await page.screenshot({ path: `output/playwright/dark-${name}-${testInfo.project.name}.png`, fullPage: true });
+  }
   await page.goto("/");
   await assertTheme(page, "dark");
   await page.screenshot({ path: `output/playwright/dark-home-${testInfo.project.name}.png`, fullPage: true });

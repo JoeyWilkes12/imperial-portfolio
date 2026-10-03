@@ -6,7 +6,7 @@ A minimal standalone version of Joey Wilkes’s Imperial 2.0 portfolio, for recr
 
 ## Content
 
-Three supplied websites on a portfolio page. The Experience page links to certifications and the full résumé; work history appears only in the résumé. Seven Final Results PDFs each have their own static subpage; Reservoir Thinning is first and featured on the home page. Projects1 links to the academic code archive. The digital résumé preserves source roles, dates, education, contact details, and its QR destination. No blogs, sample outlines, placeholder claims, or empty portfolio entries.
+Three supplied websites on a portfolio page. The Queens AI evaluation website is featured on Home and first in Portfolio, using the shared project copy. The Experience page links to certifications and the full résumé; work history appears only in the résumé. Seven Final Results PDFs each have their own static subpage; Reservoir Thinning is first in the academic archive. Projects1 links to the academic code archive. The digital résumé preserves source roles, dates, education, contact details, and its QR destination. No blogs, sample outlines, placeholder claims, or empty portfolio entries.
 
 ## Visual direction
 

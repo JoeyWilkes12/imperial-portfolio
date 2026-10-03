@@ -80,7 +80,7 @@ p { max-width: 70ch; }
 .inline-links a { display: inline-flex; align-items: center; min-height: 44px; }
 .featured { margin-top: .35rem; padding-top: 1rem; border-top: 1px solid var(--ink); }
 .featured > p:first-child { color: var(--pencil); margin-top: 0; font-size: .9rem; }
-.featured h2 { font-size: clamp(2rem, 3.3vw, 3rem); max-width: 13ch; margin-top: 1rem; }
+.featured h2 { font-size: clamp(2rem, 3.3vw, 3rem); max-width: 20ch; margin-top: 1rem; }
 .featured .summary { max-width: 34ch; }
 .primary-link { display: inline-flex; gap: 1rem; align-items: center; min-height: 44px; font-weight: 600; }
 .arrow { width: 18px; height: 18px; display: inline-block; flex: none; }

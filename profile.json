@@ -8,9 +8,9 @@
   ],
   "websites": [
     {
-      "title": "Queens Model Assessment",
-      "category": "Model evaluation",
-      "description": "An interactive technical book on Queens puzzle assessments, with inspectable evidence.",
+      "title": "How well can AI models play Queens?",
+      "category": "AI Evals",
+      "description": "Extensive computational & scientific assessment of various AI models ability to play logical puzzle Queens",
       "url": "https://joeywilkes12.github.io/queens-model-assessment/#/executive-summary"
     },
     {

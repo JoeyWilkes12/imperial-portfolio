@@ -1,6 +1,6 @@
 # Imperial portfolio
 
-A minimal standalone copy of Imperial 2.0 for Joey Wilkes. Three websites, certifications, seven academic reports, and a complete digital résumé with the original QR destination. Reservoir Thinning is the featured report. Blog and sample content have been removed.
+A minimal standalone copy of Imperial 2.0 for Joey Wilkes. Three websites, certifications, seven academic reports, and a complete digital résumé with the original QR destination. The Queens AI evaluation website is featured on Home and first in Portfolio. Reservoir Thinning leads the academic archive. Blog and sample content have been removed.
 
 Published at https://joeywilkes12.github.io/imperial-portfolio/.
 
