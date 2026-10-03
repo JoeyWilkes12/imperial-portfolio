@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Project Records — Joey Wilkes</title>
+    <meta name="description" content="Four source-backed project records spanning research, NLP, simulation, and machine learning." />
+    <meta name="theme-color" content="#edefea" />
+    <link rel="icon" href="../assets/favicon.png" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to project records</a>
+    <header class="site-header">
+      <a class="wordmark" href="../"><span>Joey Wilkes</span><small>Working record</small></a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="../#work">Work</a><a href="../#experience">Experience</a><a href="../writing/">Writing</a><a href="../about/">About</a><a href="../contact/">Contact</a>
+      </nav>
+      <details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="../#work">Work</a><a href="../#experience">Experience</a><a href="../writing/">Writing</a><a href="../about/">About</a><a href="../contact/">Contact</a></nav></details>
+    </header>
+
+    <main class="page-main content-shell" id="main">
+      <header class="page-intro">
+        <div><p class="eyebrow">Archive · 2019—2022</p><h1>Project<br />records</h1></div>
+        <p>Questions, methods, and reported findings remain attached to their archived sources.</p>
+      </header>
+
+      <div class="archive-list">
+        <article class="archive-entry" id="reservoir-network-thinning">
+          <header><p>2022<br />Research · HPC · ML</p></header>
+          <div class="archive-entry__content">
+            <p class="status">Source-backed project report</p>
+            <h2>Learning Using Thinned Networks: A Crowdsourcing Phenomena in Reservoir Computing</h2>
+            <h3>Question</h3><p>The report studies whether aggressively thinning the internal networks of reservoir computers can improve how they reconstruct chaotic dynamics.</p>
+            <h3>Approach</h3><p>The team compared thinned and conventional reservoirs across more than 100 million numerical experiments, then connected performance to node independence, response diversity, and spectral radius.</p>
+            <h3>Reported finding</h3><p>Highly thinned networks often outperformed conventional networks. The paper frames the effect through a crowdsourcing analogy and proposes spectral-radius guidance.</p>
+            <p class="source-note">Authored by J. Jamieson, D. J. Passey, B. Webb, and J. Wilkes.</p>
+            <a href="https://github.com/jbwilkes/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Reservoir%20Thinning.pdf" target="_blank" rel="noopener noreferrer">View archived report ↗</a>
+          </div>
+        </article>
+
+        <article class="archive-entry" id="conference-discourse-nlp">
+          <header><p>2021<br />NLP · Classification</p></header>
+          <div class="archive-entry__content">
+            <p class="status">Source-backed project report</p>
+            <h2>A Natural Language Processing Analysis of General Conference Discourses</h2>
+            <h3>Question</h3><p>The project explored how a multi-decade corpus of public discourses could support recommendation, topic analysis, and classification tasks.</p>
+            <h3>Approach</h3><p>The report applies latent semantic indexing and non-negative matrix factorization for similarity, LDACGS and classifiers for topics, and Hidden Markov Models for topic and speaker classification.</p>
+            <h3>Scope note</h3><p>This record describes the archived team report without independently re-validating its results.</p>
+            <p class="source-note">Authored by Clark Brown, Mikelle Rogers, Daniel Swingle, Joseph Wilkes, and Caleb Wilson.</p>
+            <a href="https://github.com/jbwilkes/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/General%20Conference%20NLP.pdf" target="_blank" rel="noopener noreferrer">View archived report ↗</a>
+          </div>
+        </article>
+
+        <article class="archive-entry" id="risk-game-prediction">
+          <header><p>2020<br />Simulation · Modeling</p></header>
+          <div class="archive-entry__content">
+            <p class="status">Source-backed project report</p>
+            <h2>RISK Game Prediction</h2>
+            <h3>Question</h3><p>Can the eventual winner of a simulated strategy game be predicted from a snapshot of the board before the game ends?</p>
+            <h3>Approach</h3><p>The team generated tens of thousands of simulated PyRisk games, engineered board-state features, and compared predictive models at different stages of play.</p>
+            <h3>Reported finding</h3><p>Accuracy rose as games progressed. The report explicitly cautions that the data represents AI players rather than humans.</p>
+            <p class="source-note">Authored by Jacob Murri, Joseph Wilkes, Caleb Wilson, and Lukas Erekson.</p>
+            <a href="https://github.com/jbwilkes/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/RISK%20Game%20Prediction.pdf" target="_blank" rel="noopener noreferrer">View archived report ↗</a>
+          </div>
+        </article>
+
+        <article class="archive-entry" id="movie-revenue-modeling">
+          <header><p>2019<br />Regression · Analysis</p></header>
+          <div class="archive-entry__content">
+            <p class="status">Source-backed project report</p>
+            <h2>Let's All Go to the Movies</h2>
+            <h3>Question</h3><p>How well can publicly available movie features predict domestic and worldwide box-office revenue?</p>
+            <h3>Approach</h3><p>The team compared several machine-learning methods and reported separate model choices for domestic and worldwide revenue.</p>
+            <h3>Reported finding</h3><p>The report favors K-nearest neighbors for domestic revenue and backpropagation for worldwide revenue, while noting selection bias in a dataset concentrated on high-grossing films.</p>
+            <p class="source-note">Authored by Joseph Wilkes, Jacob Rohde, and Pauline Caussé.</p>
+            <a href="https://github.com/jbwilkes/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Prediction%20Movie%20Revenue.pdf" target="_blank" rel="noopener noreferrer">View archived report ↗</a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer"><div class="content-shell"><p><strong>Joey Wilkes</strong><span>Data · AI · Engineering</span></p><nav aria-label="Profile links"><a href="https://www.linkedin.com/in/joseph-b-wilkes/" target="_blank" rel="me noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/JoeyWilkes12" target="_blank" rel="me noopener noreferrer">GitHub ↗</a><a href="https://www.credly.com/users/joey-wilkes/badges/credly" target="_blank" rel="me noopener noreferrer">Credly ↗</a></nav><p class="colophon">Project language is derived from the archived reports linked above.</p></div></footer>
+  </body>
+</html>

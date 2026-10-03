@@ -1,0 +1,15 @@
+{
+  "name": "Joey Wilkes",
+  "focus": ["Data science", "Artificial intelligence", "Data engineering", "Research"],
+  "profiles": {
+    "linkedin": "https://www.linkedin.com/in/joseph-b-wilkes/",
+    "github": "https://github.com/JoeyWilkes12",
+    "credly": "https://www.credly.com/users/joey-wilkes/badges/credly"
+  },
+  "projects": [
+    {"year": 2022, "name": "Reservoir Network Thinning", "path": "projects/#reservoir-network-thinning", "status": "Source-backed project report"},
+    {"year": 2021, "name": "Conference Discourse NLP", "path": "projects/#conference-discourse-nlp", "status": "Source-backed project report"},
+    {"year": 2020, "name": "RISK Game Prediction", "path": "projects/#risk-game-prediction", "status": "Source-backed project report"},
+    {"year": 2019, "name": "Movie Revenue Modeling", "path": "projects/#movie-revenue-modeling", "status": "Source-backed project report"}
+  ]
+}

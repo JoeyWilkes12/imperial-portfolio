@@ -1,0 +1,19 @@
+# Joey Wilkes — Imperial 2.0
+
+This static portfolio presents source-backed work across data science, AI,
+engineering, analysis, and research.
+
+## Public pages
+
+- `/` — interactive evidence ledger, experience, writing index, recommendations
+- `/projects/` — four project records with archived sources
+- `/writing/` — three sample article outlines
+- `/about/` — professional focus and working principles
+- `/contact/` — public profile channels
+- `/profile.json` — machine-readable profile and project index
+
+## Content status
+
+Project records are derived from linked archived reports. Experience is a
+source-backed public profile record. Writing entries are labeled sample
+article outlines.
