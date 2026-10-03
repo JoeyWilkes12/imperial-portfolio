@@ -14,7 +14,7 @@ npm run serve
 
 Open http://127.0.0.1:4173/.
 
-The header provides a light/dark theme toggle. It follows the device appearance until a visitor chooses a theme, then remembers that choice across pages and reloads. Mobile navigation uses a hamburger icon with an accessible Menu label and a close icon when expanded. Home is first among its five destinations. The Experience page contains only the certifications introduction and links to certifications and the full résumé. Printing retains light paper and dark text.
+The header provides a light/dark theme toggle. It follows the device appearance until a visitor chooses a theme, then remembers that choice across pages and reloads. Mobile navigation uses a hamburger icon with an accessible Menu label and a close icon when expanded. Home is first among its five destinations. The Experience page contains only the certifications introduction and links to certifications and the full résumé. The résumé keeps role headings visible and responsibilities collapsed by default behind Show/Hide controls with chevrons. Native disclosures work without JavaScript. Printing retains light paper and dark text and includes every responsibility. The home feature has no background diagram.
 
 ## Shared content
 

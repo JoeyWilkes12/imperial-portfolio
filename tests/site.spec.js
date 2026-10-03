@@ -102,7 +102,7 @@ async function assertTheme(page, theme) {
   if (theme === "dark") expect(colors.foreground).toBeGreaterThan(colors.background);
   else expect(colors.background).toBeGreaterThan(colors.foreground);
   expect((Math.max(colors.background, colors.foreground) + 0.05) / (Math.min(colors.background, colors.foreground) + 0.05)).toBeGreaterThanOrEqual(4.5);
-  const contrasts = await page.locator(".wordmark small, .metadata, .category, .page-intro p, .link-row p, .report-list small, .theme-toggle, .mobile-nav summary, .mobile-nav nav a").evaluateAll(elements => {
+  const contrasts = await page.locator(".wordmark small, .metadata, .category, .page-intro p, .link-row p, .report-list small, .theme-toggle, .mobile-nav summary, .mobile-nav nav a, .role-details summary").evaluateAll(elements => {
     const luminance = color => {
       const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map(value => {
         const channel = value / 255;
@@ -126,14 +126,27 @@ async function assertTheme(page, theme) {
 
 async function assertResume(page) {
   const main = page.getByRole("main");
+  const source = JSON.parse(await readFile(new URL("../content/resume.json", import.meta.url), "utf8"));
   await expect(main.getByRole("heading", { name: "Joseph Wilkes", exact: true })).toBeVisible();
   await expect(main.locator(".role")).toHaveCount(4);
-  for (const role of roles) {
+  for (const [index, role] of roles.entries()) {
     const entry = main.locator(".role").filter({ has: page.getByRole("heading", { name: role.title, exact: true }) });
+    await expect(entry.getByRole("heading", { level: 3, name: role.title, exact: true })).toBeVisible();
+    await expect(entry.locator(".organization")).toBeVisible();
+    await expect(entry.locator(".metadata")).toBeVisible();
     await expect(entry).toContainText(role.organization);
     await expect(entry).toContainText(role.date);
     await expect(entry).toContainText(role.location);
-    await expect(entry.getByRole("listitem")).toHaveCount(role.bullets);
+    const details = entry.locator("details.role-details");
+    await expect(details).toHaveCount(1);
+    await expect(details).not.toHaveAttribute("open", "");
+    await expect(details.locator("summary")).toHaveAccessibleName("Show responsibilities");
+    await expect(details.locator(".details-label-closed")).toBeVisible();
+    await expect(details.locator(".details-label-open")).toBeHidden();
+    await expect(details.locator("svg.details-chevron")).toHaveAttribute("aria-hidden", "true");
+    await expect(entry.locator("li")).toHaveCount(role.bullets);
+    await expect(entry.locator("li")).toHaveText(source.experience[index].bullets);
+    for (const bullet of await entry.locator("li").all()) await expect(bullet).toBeHidden();
   }
   // Keep quantitative source details and the entire education record intact.
   for (const text of ["30+ interactive components", "200+ GB", "Saved 12+ hours", "millions of dollars", "Core Value Award", "12+ individuals", "10+ TB", "two research conferences", "Developed 12+ features", "geospatial analysis", "BS, Applied & Computational Mathematics (ACME)", "Brigham Young University", "April 2021", "Business Management", "GPA: 3.50"]) {
@@ -449,6 +462,128 @@ test("digital résumé preserves source roles, dates, education, downloads, and 
   await expect(page.getByRole("link", { name: "Personal website", exact: true })).toHaveAttribute("href", "https://joeywilkes12.github.io/personal-website-router/");
 });
 
+test("résumé responsibilities open independently with pointer and keyboard in both themes", async ({ page }) => {
+  for (const theme of ["light", "dark"]) {
+    await page.emulateMedia({ colorScheme: theme });
+    await page.goto("/resume/");
+    await assertResume(page);
+    await assertTheme(page, theme);
+    const details = page.locator(".role-details");
+    const first = details.nth(0);
+    const second = details.nth(1);
+    const summary = first.locator("summary");
+    for (const control of await details.locator("summary").all()) {
+      const bounds = await control.boundingBox();
+      expect(bounds.width).toBeGreaterThanOrEqual(44);
+      expect(bounds.height).toBeGreaterThanOrEqual(44);
+    }
+    await summary.focus();
+    await expect(summary).toBeFocused();
+    expect(await summary.evaluate(element => getComputedStyle(element).outlineStyle)).not.toBe("none");
+    await summary.press("Enter");
+    await expect(first).toHaveAttribute("open", "");
+    await expect(summary).toHaveAccessibleName("Hide responsibilities");
+    await expect(summary.locator(".details-label-closed")).toBeHidden();
+    await expect(summary.locator(".details-label-open")).toBeVisible();
+    for (const bullet of await first.locator("li").all()) await expect(bullet).toBeVisible();
+    expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([true, false, false, false]);
+    await second.locator("summary").click();
+    expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([true, true, false, false]);
+    for (const bullet of await second.locator("li").all()) await expect(bullet).toBeVisible();
+    await second.locator("summary").click();
+    await summary.focus();
+    await summary.press("Space");
+    expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([false, false, false, false]);
+    await expect(summary).toHaveAccessibleName("Show responsibilities");
+    for (const bullet of await first.locator("li").all()) await expect(bullet).toBeHidden();
+    for (const role of await details.all()) {
+      const control = role.locator("summary");
+      await control.click();
+      await expect(role).toHaveAttribute("open", "");
+      await expect(control).toHaveAccessibleName("Hide responsibilities");
+      await control.click();
+      await expect(role).not.toHaveAttribute("open", "");
+      await expect(control).toHaveAccessibleName("Show responsibilities");
+    }
+    await summary.focus();
+    await summary.press("Enter");
+    await expect(first).toHaveAttribute("open", "");
+    await summary.press("Space");
+    await expect(first).not.toHaveAttribute("open", "");
+    await assertNoOverflow(page, `${theme} résumé responsibilities`);
+  }
+});
+
+test("printing exposes all résumé responsibilities and restores the previous disclosure state", async ({ page }) => {
+  await page.goto("/resume/");
+  const details = page.locator(".role-details");
+  for (const initialState of [[false, false, false, false], [true, false, true, false]]) {
+    for (let index = 0; index < initialState.length; index += 1) {
+      const role = details.nth(index);
+      if (await role.evaluate(element => element.open) !== initialState[index]) await role.locator("summary").click();
+    }
+    await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+    expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([true, true, true, true]);
+    await page.emulateMedia({ media: "print" });
+    await expect(details.locator("li")).toHaveCount(13);
+    for (const bullet of await details.locator("li").all()) await expect(bullet).toBeVisible();
+    for (const summary of await details.locator("summary").all()) await expect(summary).toBeHidden();
+    await page.emulateMedia({ media: "screen" });
+    await page.evaluate(() => window.dispatchEvent(new Event("afterprint")));
+    expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual(initialState);
+    for (let index = 0; index < initialState.length; index += 1) {
+      const role = details.nth(index);
+      await expect(role.locator("summary")).toHaveAccessibleName(initialState[index] ? "Hide responsibilities" : "Show responsibilities");
+      for (const bullet of await role.locator("li").all()) {
+        if (initialState[index]) await expect(bullet).toBeVisible();
+        else await expect(bullet).toBeHidden();
+      }
+    }
+  }
+});
+
+test("résumé disclosures work with JavaScript disabled in both themes", async ({ browser }, testInfo) => {
+  for (const theme of ["light", "dark"]) {
+    const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: theme, viewport: testInfo.project.use.viewport });
+    const page = await context.newPage();
+    try {
+      await page.goto(new URL("/resume/", testInfo.project.use.baseURL).href);
+      await assertResume(page);
+      const details = page.locator(".role-details");
+      const first = details.nth(0);
+      const summary = first.locator("summary");
+      await summary.click();
+      await expect(summary).toHaveAccessibleName("Hide responsibilities");
+      for (const bullet of await first.locator("li").all()) await expect(bullet).toBeVisible();
+      await details.nth(1).locator("summary").focus();
+      await details.nth(1).locator("summary").press("Enter");
+      expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([true, true, false, false]);
+      await summary.focus();
+      await summary.press("Space");
+      await expect(summary).toHaveAccessibleName("Show responsibilities");
+      for (const bullet of await first.locator("li").all()) await expect(bullet).toBeHidden();
+      await assertNoOverflow(page, `JavaScript disabled ${theme} résumé disclosures`);
+      for (const role of await details.all()) {
+        if (await role.evaluate(element => element.open)) {
+          const control = role.locator("summary");
+          await control.focus();
+          await control.press("Enter");
+        }
+      }
+      expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([false, false, false, false]);
+      await page.emulateMedia({ media: "print" });
+      await expect(details.locator("li")).toHaveCount(13);
+      for (const bullet of await details.locator("li").all()) await expect(bullet).toBeVisible();
+      for (const control of await details.locator("summary").all()) await expect(control).toBeHidden();
+      await page.emulateMedia({ media: "screen" });
+      expect(await details.evaluateAll(elements => elements.map(element => element.open))).toEqual([false, false, false, false]);
+      for (const bullet of await details.locator("li").all()) await expect(bullet).toBeHidden();
+    } finally {
+      await context.close();
+    }
+  }
+});
+
 test("all content and mobile navigation remain available with JavaScript disabled", async ({ browser }, testInfo) => {
   const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: "light", viewport: testInfo.project.use.viewport });
   const page = await context.newPage();
@@ -501,12 +636,25 @@ test("system dark theme and the hamburger work with JavaScript disabled", async 
   }
 });
 
-test("reduced motion disables the animated canvas", async ({ page }, testInfo) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  await expect(page.locator("#lorenz-trace")).toBeHidden();
-  if (testInfo.project.name === "desktop") await expect(page.locator(".trace-static")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Joey Wilkes", level: 1 })).toBeVisible();
+test("home has no trace graphic in either theme, motion preference, or JavaScript mode", async ({ browser }, testInfo) => {
+  for (const javaScriptEnabled of [true, false]) {
+    for (const theme of ["light", "dark"]) {
+      const context = await browser.newContext({ javaScriptEnabled, colorScheme: theme, viewport: testInfo.project.use.viewport });
+      const page = await context.newPage();
+      try {
+        for (const reducedMotion of ["no-preference", "reduce"]) {
+          await page.emulateMedia({ reducedMotion });
+          await page.goto(new URL("/", testInfo.project.use.baseURL).href);
+          await expect(page.locator(".trace-wrap, .trace-static, #lorenz-trace, .home-hero canvas")).toHaveCount(0);
+          await expect(page.getByRole("heading", { name: "Joey Wilkes", level: 1 })).toBeVisible();
+          await assertQueensProject(page.locator(".featured"));
+          await assertNoOverflow(page, `${theme} home without trace, JavaScript ${javaScriptEnabled}, motion ${reducedMotion}`);
+        }
+      } finally {
+        await context.close();
+      }
+    }
+  }
 });
 
 test("capture home, portfolio, certifications, academic archive, and résumé for visual review", async ({ page }, testInfo) => {
@@ -517,6 +665,10 @@ test("capture home, portfolio, certifications, academic archive, and résumé fo
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     await page.screenshot({ path: `output/playwright/${name}-${testInfo.project.name}.png`, fullPage: true });
+    if (name === "resume") {
+      await page.locator(".role-details summary").first().click();
+      await page.screenshot({ path: `output/playwright/resume-expanded-${testInfo.project.name}.png`, fullPage: true });
+    }
   }
   await page.emulateMedia({ colorScheme: "dark" });
   for (const [name, path] of [["experience", "/experience/"], ["portfolio", "/portfolio/"]]) {
@@ -524,6 +676,11 @@ test("capture home, portfolio, certifications, academic archive, and résumé fo
     await assertTheme(page, "dark");
     await page.screenshot({ path: `output/playwright/dark-${name}-${testInfo.project.name}.png`, fullPage: true });
   }
+  await page.goto("/resume/");
+  await assertTheme(page, "dark");
+  await page.screenshot({ path: `output/playwright/dark-resume-${testInfo.project.name}.png`, fullPage: true });
+  await page.locator(".role-details summary").first().click();
+  await page.screenshot({ path: `output/playwright/dark-resume-expanded-${testInfo.project.name}.png`, fullPage: true });
   await page.goto("/");
   await assertTheme(page, "dark");
   await page.screenshot({ path: `output/playwright/dark-home-${testInfo.project.name}.png`, fullPage: true });
