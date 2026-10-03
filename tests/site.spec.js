@@ -20,7 +20,7 @@ const reports = [
 const routes = [
   { path: "/", heading: "Joey Wilkes", title: "Joey Wilkes" },
   { path: "/portfolio/", heading: "Portfolio", title: "Portfolio" },
-  { path: "/experience/", heading: "Experience", title: "Experience" },
+  { path: "/experience/", heading: "Certifications", title: "Experience" },
   { path: "/academic/", heading: "Academic experience", title: "Academic experience" },
   { path: "/resume/", heading: "Joseph Wilkes", title: "Résumé" },
   ...reports.map(report => ({ path: `/academic/${report.slug}/`, heading: report.title, title: report.shortTitle }))
@@ -35,6 +35,19 @@ const navDestinations = [
   ["Portfolio", "/portfolio/"], ["Experience", "/experience/"],
   ["Academic", "/academic/"], ["Résumé", "/resume/"]
 ];
+const mobileNavDestinations = [["Home", "/"], ...navDestinations];
+
+async function assertNavigationDestinations(page, path) {
+  for (const [selector, destinations] of [[".desktop-nav a", navDestinations], [".mobile-nav nav a", mobileNavDestinations]]) {
+    const links = page.locator(selector);
+    await expect(links).toHaveCount(destinations.length);
+    await expect(links).toHaveText(destinations.map(([name]) => name));
+    expect(await links.evaluateAll(elements => elements.map(element => new URL(element.href).pathname))).toEqual(destinations.map(([, destination]) => destination));
+  }
+  const home = page.locator(".mobile-nav nav").getByRole("link", { name: "Home", exact: true, includeHidden: true });
+  if (path === "/") await expect(home).toHaveAttribute("aria-current", "page");
+  else await expect(home).not.toHaveAttribute("aria-current", "page");
+}
 
 async function assertNoOverflow(page, route) {
   const dimensions = await page.evaluate(() => ({
@@ -130,6 +143,7 @@ test("all 12 pages render meaningful content without overflow, blog content, or 
     await expect(page).toHaveTitle(route.path === "/" ? "Joey Wilkes — Data, AI & Engineering" : `${route.title} — Joey Wilkes`);
     await expect(page.getByRole("heading", { level: 1, name: route.heading, exact: true })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
+    await assertNavigationDestinations(page, route.path);
     await assertTheme(page, "light");
     await assertNoOverflow(page, route.path);
     const visibleText = await page.locator("body").innerText();
@@ -228,7 +242,8 @@ test("mobile hamburger icon opens and closes accessible navigation with the keyb
   await expect(summary.locator(".menu-bars")).toBeHidden();
   await expect(summary.locator(".menu-close")).toBeVisible();
   const nav = page.getByRole("navigation", { name: "Mobile navigation", exact: true });
-  for (const [name] of navDestinations) await expect(nav.getByRole("link", { name, exact: true })).toBeVisible();
+  await expect(nav.getByRole("link")).toHaveText(mobileNavDestinations.map(([name]) => name));
+  for (const [name] of mobileNavDestinations) await expect(nav.getByRole("link", { name, exact: true })).toBeVisible();
   await assertTheme(page, "dark");
   await assertNoOverflow(page, "open mobile menu");
   await summary.press("Enter");
@@ -246,7 +261,7 @@ test("mobile hamburger icon opens and closes accessible navigation with the keyb
 test("primary navigation reaches every page with pointer and keyboard", async ({ page }, testInfo) => {
   await page.goto("/");
   const mobile = testInfo.project.name === "mobile";
-  for (const [name, path] of navDestinations) {
+  for (const [name, path] of mobile ? mobileNavDestinations : navDestinations) {
     let nav;
     if (mobile) {
       const menu = page.locator(".mobile-nav");
@@ -267,6 +282,7 @@ test("primary navigation reaches every page with pointer and keyboard", async ({
       await link.click();
     }
     await expect(page).toHaveURL(new RegExp(`${path}$`));
+    await expect(page.getByRole("heading", { level: 1, name: routes.find(route => route.path === path).heading, exact: true })).toBeVisible();
     const currentNav = page.getByRole("navigation", { name: mobile ? "Mobile navigation" : "Primary navigation", exact: true, includeHidden: true });
     await expect(currentNav.getByRole("link", { name, exact: true, includeHidden: true })).toHaveAttribute("aria-current", "page");
     if (mobile) await expect(page.locator(".mobile-nav")).not.toHaveAttribute("open", "");
@@ -276,7 +292,21 @@ test("primary navigation reaches every page with pointer and keyboard", async ({
   await expect(page.getByRole("heading", { level: 1, name: "Joey Wilkes" })).toBeVisible();
 });
 
-test("portfolio includes exactly the three requested websites and experience links certifications", async ({ page }) => {
+test("Home is the first hamburger destination and reaches the homepage from a nested report", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile", "Hamburger navigation is shown at mobile widths.");
+  await page.goto("/academic/reservoir-thinning/");
+  await page.locator(".mobile-nav summary").click();
+  const nav = page.getByRole("navigation", { name: "Mobile navigation", exact: true });
+  await expect(nav.getByRole("link")).toHaveText(mobileNavDestinations.map(([name]) => name));
+  await nav.getByRole("link", { name: "Home", exact: true }).click();
+  await expect(page).toHaveURL(new URL("/", testInfo.project.use.baseURL).href);
+  await expect(page.getByRole("heading", { level: 1, name: "Joey Wilkes", exact: true })).toBeVisible();
+  await expect(page.locator(".mobile-nav")).not.toHaveAttribute("open", "");
+  await page.locator(".mobile-nav summary").click();
+  await expect(page.getByRole("navigation", { name: "Mobile navigation", exact: true }).getByRole("link", { name: "Home", exact: true })).toHaveAttribute("aria-current", "page");
+});
+
+test("portfolio includes exactly the three requested websites", async ({ page }) => {
   await page.goto("/portfolio/");
   const links = page.getByRole("main").getByRole("link", { name: "Visit website", exact: true });
   await expect(links).toHaveCount(3);
@@ -285,12 +315,35 @@ test("portfolio includes exactly the three requested websites and experience lin
     await expect(link).toHaveAttribute("target", "_blank");
     await expect(link).toHaveAttribute("rel", /noopener/);
   }
+});
+
+test("Experience shows only certifications and a link to the full résumé", async ({ page }) => {
   await page.goto("/experience/");
-  await expect(page.getByRole("link", { name: "Explore certifications", exact: true })).toHaveAttribute("href", certificateUrl);
+  await expect(page).toHaveTitle("Experience — Joey Wilkes");
+  const main = page.getByRole("main");
+  await expect(main.getByRole("heading")).toHaveText(["Certifications"]);
+  await expect(main.getByRole("heading", { level: 1, name: "Certifications", exact: true })).toBeVisible();
+  await expect(main.locator("p")).toHaveText(["Credentials and courses across cloud, AI, FinOps, and sustainability."]);
+  await expect(main.getByRole("link")).toHaveText(["Explore certifications", "Full résumé"]);
+  const certifications = main.getByRole("link", { name: "Explore certifications", exact: true });
+  await expect(certifications).toHaveAttribute("href", certificateUrl);
+  await expect(certifications).toHaveAttribute("target", "_blank");
+  await expect(certifications).toHaveAttribute("rel", /noopener/);
+  await expect(certifications.locator("svg.arrow")).toHaveAttribute("aria-hidden", "true");
+  const resume = main.getByRole("link", { name: "Full résumé", exact: true });
+  await expect(resume).toHaveAttribute("href", "../resume/");
+  await expect(resume.locator("svg.arrow")).toHaveAttribute("aria-hidden", "true");
+  await expect(main.getByRole("heading", { name: "Experience", exact: true })).toHaveCount(0);
+  await expect(main.locator('[aria-label="Work history"], .project-item, .role')).toHaveCount(0);
+  await expect(main).not.toContainText("Data engineering, analytics, and applied research.");
   for (const role of roles) {
-    await expect(page.getByRole("main").getByRole("heading", { name: role.title, exact: true })).toBeVisible();
-    await expect(page.getByRole("main")).toContainText(role.date);
+    await expect(main.getByRole("heading", { name: role.title, exact: true })).toHaveCount(0);
+    await expect(main).not.toContainText(role.organization);
+    await expect(main).not.toContainText(role.date);
   }
+  await resume.click();
+  await expect(page).toHaveURL(/\/resume\/$/);
+  await assertResume(page);
 });
 
 test("academic archive prioritizes Reservoir Thinning and exposes all seven sourced reports", async ({ page, request }) => {
@@ -359,7 +412,10 @@ test("all content and mobile navigation remain available with JavaScript disable
     await assertResume(page);
     if (testInfo.project.name === "mobile") {
       await page.locator(".mobile-nav summary").click();
-      await expect(page.getByRole("navigation", { name: "Mobile navigation", exact: true }).getByRole("link", { name: "Academic", exact: true })).toBeVisible();
+      const nav = page.getByRole("navigation", { name: "Mobile navigation", exact: true });
+      await expect(nav.getByRole("link")).toHaveText(mobileNavDestinations.map(([name]) => name));
+      await nav.getByRole("link", { name: "Home", exact: true }).click();
+      await expect(page.getByRole("heading", { level: 1, name: "Joey Wilkes", exact: true })).toBeVisible();
     }
   } finally {
     await context.close();
@@ -385,7 +441,9 @@ test("system dark theme and the hamburger work with JavaScript disabled", async 
       await expect(summary.locator(".menu-bars")).toBeVisible();
       await summary.click();
       await expect(summary.locator(".menu-close")).toBeVisible();
-      await page.getByRole("navigation", { name: "Mobile navigation", exact: true }).getByRole("link", { name: "Portfolio", exact: true }).click();
+      const nav = page.getByRole("navigation", { name: "Mobile navigation", exact: true });
+      await expect(nav.getByRole("link")).toHaveText(mobileNavDestinations.map(([name]) => name));
+      await nav.getByRole("link", { name: "Portfolio", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1, name: "Portfolio", exact: true })).toBeVisible();
     }
   } finally {
@@ -401,16 +459,19 @@ test("reduced motion disables the animated canvas", async ({ page }, testInfo) =
   await expect(page.getByRole("heading", { name: "Joey Wilkes", level: 1 })).toBeVisible();
 });
 
-test("capture home, academic archive, and résumé for visual review", async ({ page }, testInfo) => {
+test("capture home, certifications, academic archive, and résumé for visual review", async ({ page }, testInfo) => {
   test.skip(process.env.UPDATE_SCREENSHOTS !== "1", "Set UPDATE_SCREENSHOTS=1 to refresh visual review artifacts.");
   await mkdir("output/playwright", { recursive: true });
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  for (const [name, path] of [["home", "/"], ["academic", "/academic/"], ["resume", "/resume/"]]) {
+  await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
+  for (const [name, path] of [["home", "/"], ["experience", "/experience/"], ["academic", "/academic/"], ["resume", "/resume/"]]) {
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     await page.screenshot({ path: `output/playwright/${name}-${testInfo.project.name}.png`, fullPage: true });
   }
   await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/experience/");
+  await assertTheme(page, "dark");
+  await page.screenshot({ path: `output/playwright/dark-experience-${testInfo.project.name}.png`, fullPage: true });
   await page.goto("/");
   await assertTheme(page, "dark");
   await page.screenshot({ path: `output/playwright/dark-home-${testInfo.project.name}.png`, fullPage: true });
