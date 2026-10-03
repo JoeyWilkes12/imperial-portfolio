@@ -1,9 +1,46 @@
 (() => {
   "use strict";
 
+  const root = document.documentElement;
+  const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const themeToggle = document.querySelector(".theme-toggle");
+  let preferredTheme = null;
+  try {
+    const saved = localStorage.getItem("imperial-theme");
+    if (saved === "light" || saved === "dark") preferredTheme = saved;
+  } catch { /* The toggle still works when browser storage is unavailable. */ }
+
+  const applyTheme = (theme) => {
+    root.dataset.theme = theme;
+    const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+    themeToggle?.setAttribute("aria-label", label);
+    themeToggle?.setAttribute("title", label);
+    themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", theme === "dark" ? "#191d1b" : "#edefea");
+    window.dispatchEvent(new CustomEvent("trace:reink"));
+  };
+  applyTheme(preferredTheme || (systemTheme.matches ? "dark" : "light"));
+  if (themeToggle) {
+    themeToggle.hidden = false;
+    themeToggle.addEventListener("click", () => {
+      preferredTheme = root.dataset.theme === "dark" ? "light" : "dark";
+      try { localStorage.setItem("imperial-theme", preferredTheme); } catch { /* Keep the in-page preference. */ }
+      applyTheme(preferredTheme);
+    });
+  }
+  systemTheme.addEventListener("change", (event) => {
+    if (!preferredTheme) applyTheme(event.matches ? "dark" : "light");
+  });
+
   const mobileMenu = document.querySelector(".mobile-nav");
   mobileMenu?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => mobileMenu.removeAttribute("open"));
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && mobileMenu?.open) {
+      mobileMenu.removeAttribute("open");
+      mobileMenu.querySelector("summary")?.focus();
+    }
   });
 
   const canvas = document.querySelector("#lorenz-trace");

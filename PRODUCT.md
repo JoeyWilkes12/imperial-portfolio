@@ -10,7 +10,7 @@ Three supplied websites on a portfolio page. Professional experience derived fro
 
 ## Visual direction
 
-Preserve Imperial 2.0’s cool drafting paper, near-black text, fine rules, and red Lorenz trace. Use compact descriptions, readable type, and generous space. Content is the focus. Native mobile navigation, clear keyboard focus, and accessible semantic HTML support desktop and mobile reading. All pages work without JavaScript; reduced-motion visitors see a static trace.
+Preserve Imperial 2.0’s cool drafting paper, near-black text, fine rules, and red Lorenz trace. Use compact descriptions, readable type, and generous space. Content is the focus. Native mobile navigation, clear keyboard focus, and accessible semantic HTML support desktop and mobile reading. All pages work without JavaScript; reduced-motion visitors see a static trace. Dark mode uses charcoal surfaces, pale text, and a muted red trace. The header theme toggle remembers a visitor’s choice, with device appearance as the default. Mobile navigation uses an accessible hamburger icon.
 
 ## Delivery
 

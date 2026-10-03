@@ -24,13 +24,13 @@ function page(path, title, description, body, data = {}) {
 <title>${e(path ? title+" — Joey Wilkes" : "Joey Wilkes — Data, AI & Engineering")}</title><meta name="description" content="${e(description)}">
 <meta name="theme-color" content="#edefea"><link rel="canonical" href="${SITE}${path}">
 <meta property="og:type" content="website"><meta property="og:title" content="${e(path ? title+" — Joey Wilkes" : "Joey Wilkes — Data, AI & Engineering")}"><meta property="og:description" content="${e(description)}"><meta property="og:url" content="${SITE}${path}">
-<link rel="icon" href="${prefix}assets/favicon.png"><link rel="stylesheet" href="${prefix}styles.css">
-<script>document.documentElement.classList.replace('no-js','js');</script><script defer src="${prefix}script.js"></script>
+<script>(()=>{const root=document.documentElement;root.classList.replace('no-js','js');let saved;try{saved=localStorage.getItem('imperial-theme');}catch{}const theme=saved==='light'||saved==='dark'?saved:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';root.dataset.theme=theme;document.querySelector('meta[name="theme-color"]').content=theme==='dark'?'#191d1b':'#edefea';})();</script>
+<link rel="icon" href="${prefix}assets/favicon.png"><link rel="stylesheet" href="${prefix}styles.css"><script defer src="${prefix}script.js"></script>
 <script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script>
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><a class="wordmark" href="${prefix || './'}"><span>Joey Wilkes</span><small>Data · AI · Engineering</small></a>
-<nav class="desktop-nav" aria-label="Primary navigation">${nav}</nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation">${nav}</nav></details></header>
+<div class="header-actions"><nav class="desktop-nav" aria-label="Primary navigation">${nav}</nav><button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false" hidden><svg class="theme-icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.6 13.4A8.7 8.7 0 0 1 10.6 3.4a8.7 8.7 0 1 0 10 10Z"/></svg><svg class="theme-icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6 19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg></button><details class="mobile-nav"><summary aria-label="Menu"><svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path class="menu-bars" d="M4 6h16M4 12h16M4 18h16"/><path class="menu-close" d="m6 6 12 12M6 18 18 6"/></svg></summary><nav aria-label="Mobile navigation">${nav}</nav></details></div></header>
 ${body}
 <footer class="site-footer"><div class="content-shell"><p>Joey Wilkes · Data, AI &amp; engineering</p><nav aria-label="Contact links"><a href="mailto:${e(resume.contact.email)}">Email</a>${ext(resume.contact.github,'GitHub')}<a href="${prefix}resume/">Résumé</a></nav></div></footer>
 </body></html>\n`;

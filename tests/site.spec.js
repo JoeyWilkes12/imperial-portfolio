@@ -44,6 +44,51 @@ async function assertNoOverflow(page, route) {
   expect(dimensions.content, `${route} content exceeds the viewport`).toBeLessThanOrEqual(dimensions.viewport + 1);
 }
 
+async function pageColors(page) {
+  return page.evaluate(() => {
+    const style = getComputedStyle(document.body);
+    const luminance = color => {
+      const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map(value => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+    };
+    return { background: luminance(style.backgroundColor), foreground: luminance(style.color) };
+  });
+}
+
+async function assertTheme(page, theme) {
+  await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+  const button = page.getByRole("button", { name: `Switch to ${theme === "dark" ? "light" : "dark"} theme`, exact: true });
+  await expect(button).toBeVisible();
+  await expect(button).toHaveAttribute("aria-pressed", String(theme === "dark"));
+  const colors = await pageColors(page);
+  if (theme === "dark") expect(colors.foreground).toBeGreaterThan(colors.background);
+  else expect(colors.background).toBeGreaterThan(colors.foreground);
+  expect((Math.max(colors.background, colors.foreground) + 0.05) / (Math.min(colors.background, colors.foreground) + 0.05)).toBeGreaterThanOrEqual(4.5);
+  const contrasts = await page.locator(".wordmark small, .metadata, .category, .page-intro p, .link-row p, .report-list small, .theme-toggle, .mobile-nav summary, .mobile-nav nav a").evaluateAll(elements => {
+    const luminance = color => {
+      const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map(value => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+    };
+    return elements.filter(element => element.getBoundingClientRect().width && element.getBoundingClientRect().height).map(element => {
+      let ancestor = element;
+      while (ancestor && getComputedStyle(ancestor).backgroundColor === "rgba(0, 0, 0, 0)") ancestor = ancestor.parentElement;
+      const foreground = luminance(getComputedStyle(element).color);
+      const background = luminance(getComputedStyle(ancestor || document.body).backgroundColor);
+      return {
+        label: element.className || element.tagName,
+        ratio: (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05)
+      };
+    });
+  });
+  for (const sample of contrasts) expect(sample.ratio, `${theme} ${sample.label} contrast`).toBeGreaterThanOrEqual(4.5);
+}
+
 async function assertResume(page) {
   const main = page.getByRole("main");
   await expect(main.getByRole("heading", { name: "Joseph Wilkes", exact: true })).toBeVisible();
@@ -67,6 +112,7 @@ async function assertResume(page) {
 }
 
 test("all 12 pages render meaningful content without overflow, blog content, or browser errors", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
   const errors = [];
   page.on("pageerror", error => errors.push(error.message));
   page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
@@ -84,12 +130,117 @@ test("all 12 pages render meaningful content without overflow, blog content, or 
     await expect(page).toHaveTitle(route.path === "/" ? "Joey Wilkes — Data, AI & Engineering" : `${route.title} — Joey Wilkes`);
     await expect(page.getByRole("heading", { level: 1, name: route.heading, exact: true })).toBeVisible();
     await expect(page.getByRole("main")).toBeVisible();
+    await assertTheme(page, "light");
     await assertNoOverflow(page, route.path);
     const visibleText = await page.locator("body").innerText();
     expect(visibleText, route.path).not.toMatch(/\b(blog|placeholder|lorem ipsum|coming soon|under construction|sample content)\b/i);
     await expect(page.locator('a[href*="/writing"], a[href*="/blog"], a[href="#"], a[href=""]')).toHaveCount(0);
   }
   expect(errors).toEqual([]);
+});
+
+test("all 12 pages remain readable and fit the viewport in dark theme", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  page.on("console", message => { if (message.type() === "error") errors.push(message.text()); });
+  await page.emulateMedia({ colorScheme: "dark" });
+  for (const route of routes) {
+    const response = await page.goto(route.path);
+    expect(response.status(), route.path).toBe(200);
+    await expect(page.getByRole("heading", { level: 1, name: route.heading, exact: true })).toBeVisible();
+    await assertTheme(page, "dark");
+    await assertNoOverflow(page, route.path);
+  }
+  await page.goto("/resume/");
+  const qr = page.getByRole("img", { name: "QR code linking to Joseph Wilkes’s personal website", exact: true });
+  await expect(qr).toBeVisible();
+  // The source QR must keep its own light background for reliable scanning.
+  await expect(qr).toHaveCSS("filter", "none");
+  expect(errors).toEqual([]);
+});
+
+test("theme follows system preference until a keyboard selection is saved across pages and reloads", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  await assertTheme(page, "dark");
+  expect(await page.evaluate(() => localStorage.getItem("imperial-theme"))).toBeNull();
+  await page.emulateMedia({ colorScheme: "light" });
+  await assertTheme(page, "light");
+  const button = page.locator(".theme-toggle");
+  const bounds = await button.boundingBox();
+  expect(bounds.width).toBeGreaterThanOrEqual(44);
+  expect(bounds.height).toBeGreaterThanOrEqual(44);
+  await button.focus();
+  await expect(button).toBeFocused();
+  await button.press("Space");
+  await assertTheme(page, "dark");
+  expect(await page.evaluate(() => localStorage.getItem("imperial-theme"))).toBe("dark");
+  await page.goto("/portfolio/");
+  await assertTheme(page, "dark");
+  await page.reload();
+  await assertTheme(page, "dark");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.locator(".theme-toggle").focus();
+  await page.locator(".theme-toggle").press("Enter");
+  await assertTheme(page, "light");
+  expect(await page.evaluate(() => localStorage.getItem("imperial-theme"))).toBe("light");
+  await page.goto("/academic/reservoir-thinning/");
+  await assertTheme(page, "light");
+});
+
+test("theme control remains usable when browser storage is unavailable", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      get() { throw new DOMException("Storage unavailable", "SecurityError"); }
+    });
+  });
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  await assertTheme(page, "light");
+  await page.getByRole("button", { name: "Switch to dark theme", exact: true }).click();
+  await assertTheme(page, "dark");
+  await page.getByRole("button", { name: "Switch to light theme", exact: true }).click();
+  await assertTheme(page, "light");
+  expect(errors).toEqual([]);
+});
+
+test("mobile hamburger icon opens and closes accessible navigation with the keyboard", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile", "Hamburger navigation is shown at mobile widths.");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  const menu = page.locator(".mobile-nav");
+  const summary = menu.locator("summary");
+  await expect(summary).toHaveAttribute("aria-label", "Menu");
+  await expect(summary).toHaveText("");
+  await expect(summary.locator("svg.menu-icon")).toHaveAttribute("aria-hidden", "true");
+  await expect(summary.locator(".menu-bars")).toBeVisible();
+  await expect(summary.locator(".menu-close")).toBeHidden();
+  const bounds = await summary.boundingBox();
+  expect(bounds.width).toBeGreaterThanOrEqual(44);
+  expect(bounds.height).toBeGreaterThanOrEqual(44);
+  await summary.focus();
+  await expect(summary).toBeFocused();
+  await summary.press("Enter");
+  await expect(menu).toHaveAttribute("open", "");
+  await expect(summary.locator(".menu-bars")).toBeHidden();
+  await expect(summary.locator(".menu-close")).toBeVisible();
+  const nav = page.getByRole("navigation", { name: "Mobile navigation", exact: true });
+  for (const [name] of navDestinations) await expect(nav.getByRole("link", { name, exact: true })).toBeVisible();
+  await assertTheme(page, "dark");
+  await assertNoOverflow(page, "open mobile menu");
+  await summary.press("Enter");
+  await expect(menu).not.toHaveAttribute("open", "");
+  await expect(summary.locator(".menu-bars")).toBeVisible();
+  await expect(summary.locator(".menu-close")).toBeHidden();
+  await expect(nav).toBeHidden();
+  await summary.press("Enter");
+  await nav.getByRole("link", { name: "Portfolio", exact: true }).focus();
+  await page.keyboard.press("Escape");
+  await expect(menu).not.toHaveAttribute("open", "");
+  await expect(summary).toBeFocused();
 });
 
 test("primary navigation reaches every page with pointer and keyboard", async ({ page }, testInfo) => {
@@ -196,7 +347,7 @@ test("digital résumé preserves source roles, dates, education, downloads, and 
 });
 
 test("all content and mobile navigation remain available with JavaScript disabled", async ({ browser }, testInfo) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, viewport: testInfo.project.use.viewport });
+  const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: "light", viewport: testInfo.project.use.viewport });
   const page = await context.newPage();
   try {
     for (const route of routes) {
@@ -209,6 +360,33 @@ test("all content and mobile navigation remain available with JavaScript disable
     if (testInfo.project.name === "mobile") {
       await page.locator(".mobile-nav summary").click();
       await expect(page.getByRole("navigation", { name: "Mobile navigation", exact: true }).getByRole("link", { name: "Academic", exact: true })).toBeVisible();
+    }
+  } finally {
+    await context.close();
+  }
+});
+
+test("system dark theme and the hamburger work with JavaScript disabled", async ({ browser }, testInfo) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: "dark", viewport: testInfo.project.use.viewport });
+  const page = await context.newPage();
+  try {
+    for (const path of ["/", "/resume/"]) {
+      await page.goto(new URL(path, testInfo.project.use.baseURL || "http://127.0.0.1:4173").href);
+      await expect(page.getByRole("main")).toBeVisible();
+      await expect(page.locator(".theme-toggle")).toBeHidden();
+      const colors = await pageColors(page);
+      expect(colors.foreground).toBeGreaterThan(colors.background);
+      expect((colors.foreground + 0.05) / (colors.background + 0.05)).toBeGreaterThanOrEqual(4.5);
+      await assertNoOverflow(page, `JavaScript disabled dark ${path}`);
+    }
+    await assertResume(page);
+    if (testInfo.project.name === "mobile") {
+      const summary = page.locator(".mobile-nav summary");
+      await expect(summary.locator(".menu-bars")).toBeVisible();
+      await summary.click();
+      await expect(summary.locator(".menu-close")).toBeVisible();
+      await page.getByRole("navigation", { name: "Mobile navigation", exact: true }).getByRole("link", { name: "Portfolio", exact: true }).click();
+      await expect(page.getByRole("heading", { level: 1, name: "Portfolio", exact: true })).toBeVisible();
     }
   } finally {
     await context.close();
@@ -231,5 +409,13 @@ test("capture home, academic archive, and résumé for visual review", async ({ 
     await page.goto(path);
     await expect(page.getByRole("main")).toBeVisible();
     await page.screenshot({ path: `output/playwright/${name}-${testInfo.project.name}.png`, fullPage: true });
+  }
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  await assertTheme(page, "dark");
+  await page.screenshot({ path: `output/playwright/dark-home-${testInfo.project.name}.png`, fullPage: true });
+  if (testInfo.project.name === "mobile") {
+    await page.locator(".mobile-nav summary").click();
+    await page.screenshot({ path: "output/playwright/dark-menu-mobile.png", fullPage: true });
   }
 });

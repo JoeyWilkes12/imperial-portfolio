@@ -14,6 +14,8 @@ npm run serve
 
 Open http://127.0.0.1:4173/.
 
+The header provides a light/dark theme toggle. It follows the device appearance until a visitor chooses a theme, then remembers that choice across pages and reloads. Mobile navigation uses a hamburger icon with an accessible Menu label and a close icon when expanded. Printing retains light paper and dark text.
+
 ## Shared content
 
 The workspace `shared-assets/` folder is the canonical reusable source. Run `npm run sync:assets` from the parent workspace to refresh the bundled content and downloads, then `npm run build`. This repository includes all required assets, so it builds independently on GitHub. Layouts and styles remain local to this version. Source metadata is retained in `content/`.
