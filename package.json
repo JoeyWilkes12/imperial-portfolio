@@ -1,9 +1,11 @@
 {
-  "name": "imperial-2-static",
-  "version": "2.0.0",
+  "name": "imperial-portfolio",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "node scripts/build.mjs",
+    "sync:assets": "node scripts/sync-assets.mjs",
     "serve": "node tests/static-server.mjs",
     "check:links": "node tests/check-links.mjs",
     "test:ui": "playwright test"

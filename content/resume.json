@@ -1,0 +1,104 @@
+{
+  "name": "Joseph Wilkes",
+  "contact": {
+    "email": "joseph.benson.wilkes@gmail.com",
+    "phone": "801.648.0940",
+    "phoneUrl": "tel:+18016480940",
+    "linkedin": "https://www.linkedin.com/in/joseph-b-wilkes",
+    "github": "https://github.com/JoeyWilkes12"
+  },
+  "qr": {
+    "image": "resume-qr.png",
+    "target": "https://joeywilkes12.github.io/personal-website-router/",
+    "alt": "QR code linking to Joseph Wilkes’s personal website"
+  },
+  "experience": [
+    {
+      "title": "Data Engineer",
+      "organization": "Varian – A Siemens Healthineers Company",
+      "location": "Vineyard, UT",
+      "dates": "June 2022 – Oct 2022",
+      "startDate": "2022-06",
+      "endDate": "2022-10",
+      "bullets": [
+        "Built web based Plotly Dash dashboard with 10+ data visualizations & 30+ interactive components to provide insights on A/B test of clinician’s use of AI models",
+        "Engineered medical contouring data from nested & semi-structured to tabular form using Python with minimal guidance which provided statistics for A/B test of AI performance",
+        "Updated Airflow ETL DAGs involving 3+ sources & transferred 200+ GB of medical data from Azure to GCP BigQuery for AI & ML utilization",
+        "Saved 12+ hours of contouring setup by automating manual process using Python"
+      ]
+    },
+    {
+      "title": "Analyst, SaaS Delivery",
+      "organization": "Anglepoint",
+      "location": "Lindon, UT",
+      "dates": "May 2021 – June 2022",
+      "startDate": "2021-05",
+      "endDate": "2022-06",
+      "bullets": [
+        "Utilized Python, SQL, and Excel to identify millions of dollars in potential cost savings associated with management of Salesforce, Tableau, Adobe, & other SaaS vendors",
+        "Received Selflessness Company Core Value Award Q3 – 2021",
+        "Built & lead an internal Python resource group of over 12+ individuals across several teams with vision to enhance automation & analysis of client deliverables"
+      ]
+    },
+    {
+      "title": "Research Assistant",
+      "organization": "Mathematics Department, B.Y.U.",
+      "location": "Provo, UT",
+      "dates": "Apr 2020 – May 2021",
+      "startDate": "2020-04",
+      "endDate": "2021-05",
+      "bullets": [
+        "Engineered a data pipeline for a High Performance Computing (HPC) environment using Python, Slurm, Bash, and Git yielding 10+ TB of data through 40+ years of computing",
+        "Automated processes for visualization & optimization of millions of predictive models",
+        "Communicated & collaborated about technical concepts while writing a research paper, presenting at two research conferences, and teaching about HPC & code functionality"
+      ]
+    },
+    {
+      "title": "Data Analytics Intern",
+      "organization": "Imagine Learning",
+      "location": "Provo, UT",
+      "dates": "May 2019 – Aug 2019",
+      "startDate": "2019-05",
+      "endDate": "2019-08",
+      "bullets": [
+        "Developed 12+ features for several predictive models using SQL & Python",
+        "Acquired proficiency with the following Amazon Web Services: Athena, S3, Glue, Redshift, Lambda, EC2, IAM as well as Google Cloud Platform, mainly Google Maps",
+        "Engineered novel datasets for geospatial analysis & executive reporting"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BS, Applied & Computational Mathematics (ACME)",
+      "institution": "Brigham Young University",
+      "location": "Provo, UT",
+      "dates": "April 2021",
+      "graduationDate": "2021-04",
+      "concentration": "Business Management",
+      "gpa": "3.50",
+      "coursework": [
+        "Machine Learning",
+        "Optimization",
+        "Algorithm Design",
+        "Linear Algebra",
+        "Differential Equations",
+        "C++",
+        "Technical Writing",
+        "Statistics",
+        "Marketing",
+        "Finance",
+        "Probability"
+      ]
+    }
+  ],
+  "source": {
+    "url": "https://docs.google.com/document/d/1mu9YlDZRWrcSBZBhuEO2MdX51yhx00Zm/edit",
+    "filename": "joseph-wilkes-resume.docx",
+    "retrievedDate": "2026-10-02",
+    "latestExperienceEndDate": "2022-10"
+  },
+  "downloads": {
+    "word": "joseph-wilkes-resume.docx",
+    "pdf": "joseph-wilkes-resume.pdf"
+  }
+}

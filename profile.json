@@ -1,15 +1,68 @@
 {
-  "name": "Joey Wilkes",
-  "focus": ["Data science", "Artificial intelligence", "Data engineering", "Research"],
-  "profiles": {
-    "linkedin": "https://www.linkedin.com/in/joseph-b-wilkes/",
-    "github": "https://github.com/JoeyWilkes12",
-    "credly": "https://www.credly.com/users/joey-wilkes/badges/credly"
-  },
-  "projects": [
-    {"year": 2022, "name": "Reservoir Network Thinning", "path": "projects/#reservoir-network-thinning", "status": "Source-backed project report"},
-    {"year": 2021, "name": "Conference Discourse NLP", "path": "projects/#conference-discourse-nlp", "status": "Source-backed project report"},
-    {"year": 2020, "name": "RISK Game Prediction", "path": "projects/#risk-game-prediction", "status": "Source-backed project report"},
-    {"year": 2019, "name": "Movie Revenue Modeling", "path": "projects/#movie-revenue-modeling", "status": "Source-backed project report"}
-  ]
+  "name": "Joseph Wilkes",
+  "site": "https://joeywilkes12.github.io/imperial-portfolio/",
+  "focus": [
+    "Data",
+    "AI",
+    "Engineering"
+  ],
+  "websites": [
+    {
+      "title": "Queens Model Assessment",
+      "category": "Model evaluation",
+      "description": "An interactive technical book on Queens puzzle assessments, with inspectable evidence.",
+      "url": "https://joeywilkes12.github.io/queens-model-assessment/#/executive-summary"
+    },
+    {
+      "title": "Agent Skills Resource Library",
+      "category": "AI agents",
+      "description": "Resources and guides for building, troubleshooting, and evaluating AI agent skills.",
+      "url": "https://joeywilkes12.github.io/agent-skills-resource-library/"
+    },
+    {
+      "title": "Whiteley Reunion 2026",
+      "category": "Family history",
+      "description": "A reunion hub for genealogy, schedules, food planning, and shared files.",
+      "url": "https://joeywilkes12.github.io/4amj-landing-page-01/"
+    }
+  ],
+  "academicReports": [
+    {
+      "title": "Learning Using Thinned Networks: A Crowdsourcing Phenomena in Reservoir Computing",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/reservoir-thinning/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/reservoir-thinning.pdf"
+    },
+    {
+      "title": "RISK Data Project Fall 2020",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/risk-game-prediction/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/risk-game-prediction.pdf"
+    },
+    {
+      "title": "A Natural Language Processing Analysis of General Conference Discourses Employing Time-Series and Classification Models",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/general-conference-nlp/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/general-conference-nlp.pdf"
+    },
+    {
+      "title": "Let's All Go To The Movies",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/prediction-movie-revenue/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/prediction-movie-revenue.pdf"
+    },
+    {
+      "title": "Non-Trivial Evasion",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/non-trivial-evasion/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/non-trivial-evasion.pdf"
+    },
+    {
+      "title": "Non-Trivial Pursuit",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/non-trivial-pursuit/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/non-trivial-pursuit.pdf"
+    },
+    {
+      "title": "Evaluation of Childhood Computational Thinking with ScratchJR and Robot Toys: A Literature Review",
+      "url": "https://joeywilkes12.github.io/imperial-portfolio/academic/literature-review/",
+      "pdf": "https://joeywilkes12.github.io/imperial-portfolio/assets/reports/literature-review.pdf"
+    }
+  ],
+  "resume": "https://joeywilkes12.github.io/imperial-portfolio/resume/",
+  "certifications": "https://joeywilkes12.github.io/certifications-site/"
 }

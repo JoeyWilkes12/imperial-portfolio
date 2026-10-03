@@ -7,6 +7,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const port = Number(process.env.PORT || 4173);
 const types = {
   ".css": "text/css; charset=utf-8",
+  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ".pdf": "application/pdf",
+  ".svg": "image/svg+xml",
   ".html": "text/html; charset=utf-8",
   ".jpg": "image/jpeg",
   ".js": "text/javascript; charset=utf-8",
@@ -40,5 +43,5 @@ createServer((request, response) => {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
   }
 }).listen(port, "127.0.0.1", () => {
-  console.log(`Imperial 2.0 at http://127.0.0.1:${port}`);
+  console.log(`Imperial 3.0 at http://127.0.0.1:${port}`);
 });

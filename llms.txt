@@ -1,19 +1,18 @@
-# Joey Wilkes — Imperial 2.0
+# Joey Wilkes
 
-This static portfolio presents source-backed work across data science, AI,
-engineering, analysis, and research.
+Data, AI, and engineering portfolio.
 
-## Public pages
+- [Joey Wilkes](https://joeywilkes12.github.io/imperial-portfolio/)
+- [Portfolio](https://joeywilkes12.github.io/imperial-portfolio/portfolio/)
+- [Experience](https://joeywilkes12.github.io/imperial-portfolio/experience/)
+- [Academic experience](https://joeywilkes12.github.io/imperial-portfolio/academic/)
+- [Reservoir Thinning](https://joeywilkes12.github.io/imperial-portfolio/academic/reservoir-thinning/)
+- [RISK Game Prediction](https://joeywilkes12.github.io/imperial-portfolio/academic/risk-game-prediction/)
+- [General Conference NLP](https://joeywilkes12.github.io/imperial-portfolio/academic/general-conference-nlp/)
+- [Predicting Movie Revenue](https://joeywilkes12.github.io/imperial-portfolio/academic/prediction-movie-revenue/)
+- [Non-Trivial Evasion](https://joeywilkes12.github.io/imperial-portfolio/academic/non-trivial-evasion/)
+- [Non-Trivial Pursuit](https://joeywilkes12.github.io/imperial-portfolio/academic/non-trivial-pursuit/)
+- [Childhood Computational Thinking](https://joeywilkes12.github.io/imperial-portfolio/academic/literature-review/)
+- [Résumé](https://joeywilkes12.github.io/imperial-portfolio/resume/)
 
-- `/` — interactive evidence ledger, experience, writing index, recommendations
-- `/projects/` — four project records with archived sources
-- `/writing/` — three sample article outlines
-- `/about/` — professional focus and working principles
-- `/contact/` — public profile channels
-- `/profile.json` — machine-readable profile and project index
-
-## Content status
-
-Project records are derived from linked archived reports. Experience is a
-source-backed public profile record. Writing entries are labeled sample
-article outlines.
+Machine-readable record: https://joeywilkes12.github.io/imperial-portfolio/profile.json

@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/JoeyWilkes12/Final-Results",
+  "sourceCommit": "b0aadf613045ae7e8bd594db5f82f33eab739351",
+  "retrievedAt": "2026-10-03T03:25:22.448792+00:00",
+  "pdfCount": 7,
+  "documents": [
+    {
+      "slug": "reservoir-thinning",
+      "originalFilename": "Reservoir Thinning.pdf",
+      "filename": "reservoir-thinning.pdf",
+      "gitBlobSha": "6d7c9a3dd44828d3edcb6ee1d991fad844702b34",
+      "bytes": 6811528,
+      "sha256": "e59fc550306613fd7dd6d5dace54e1479f5aff19b409512159030f9be808cae5",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/Reservoir%20Thinning.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Reservoir%20Thinning.pdf",
+      "pageCount": 15,
+      "title": "Learning Using Thinned Networks: A Crowdsourcing Phenomena in Reservoir Computing",
+      "shortTitle": "Reservoir Thinning",
+      "authors": [
+        "J. Jamieson",
+        "D. J. Passey",
+        "B. Webb",
+        "J. Wilkes"
+      ],
+      "documentDate": "2022-04-15",
+      "documentDateLabel": "April 15, 2022",
+      "summary": "Research on sparse reservoir networks that reconstruct the Lorenz attractor, connecting network thinning, spectral radius, and response diversity.",
+      "topics": [
+        "Reservoir computing",
+        "Network science",
+        "Chaotic systems"
+      ],
+      "priority": 1,
+      "featured": true,
+      "localPath": "shared-assets/academic-experience/final-results/reservoir-thinning.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/reservoir-thinning.png"
+    },
+    {
+      "slug": "risk-game-prediction",
+      "originalFilename": "RISK Game Prediction.pdf",
+      "filename": "risk-game-prediction.pdf",
+      "gitBlobSha": "05312c8395b68cb60e73eecd1f66e1e72de6322b",
+      "bytes": 1986363,
+      "sha256": "9f155c6cd6d1a8d9df802660ee6febceaf8a42adcd57a0283a5f3dee71bf2601",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/RISK%20Game%20Prediction.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/RISK%20Game%20Prediction.pdf",
+      "pageCount": 17,
+      "title": "RISK Data Project Fall 2020",
+      "shortTitle": "RISK Game Prediction",
+      "authors": [
+        "Jacob Murri",
+        "Joseph Wilkes",
+        "Caleb Wilson",
+        "Lukas Erekson"
+      ],
+      "documentDate": "2020-12-10",
+      "documentDateLabel": "December 10, 2020",
+      "summary": "Game simulation, feature engineering, and machine learning to predict the winner of RISK from the current board state.",
+      "topics": [
+        "Machine learning",
+        "Simulation",
+        "Data engineering"
+      ],
+      "priority": 2,
+      "featured": false,
+      "localPath": "shared-assets/academic-experience/final-results/risk-game-prediction.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/risk-game-prediction.png"
+    },
+    {
+      "slug": "general-conference-nlp",
+      "originalFilename": "General Conference NLP.pdf",
+      "filename": "general-conference-nlp.pdf",
+      "gitBlobSha": "ce7535fc235b0c30788728ba7e1f7a04b8c705e7",
+      "bytes": 3319586,
+      "sha256": "a98954da512e9f6137eefaa44a136d1b126f12b562ca6851b2121cc8a7f87967",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/General%20Conference%20NLP.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/General%20Conference%20NLP.pdf",
+      "pageCount": 17,
+      "title": "A Natural Language Processing Analysis of General Conference Discourses Employing Time-Series and Classification Models",
+      "shortTitle": "General Conference NLP",
+      "authors": [
+        "Clark Brown",
+        "Mikelle Rogers",
+        "Daniel Swingle",
+        "Joseph Wilkes",
+        "Caleb Wilson"
+      ],
+      "documentDate": "2021-04-15",
+      "documentDateLabel": "April 15, 2021",
+      "summary": "Topic modeling, speaker classification, and related-talk retrieval using NLP and time-series methods on General Conference discourses.",
+      "topics": [
+        "Natural language processing",
+        "Time series",
+        "Recommendation systems"
+      ],
+      "priority": 3,
+      "featured": false,
+      "localPath": "shared-assets/academic-experience/final-results/general-conference-nlp.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/general-conference-nlp.png"
+    },
+    {
+      "slug": "prediction-movie-revenue",
+      "originalFilename": "Prediction Movie Revenue.pdf",
+      "filename": "prediction-movie-revenue.pdf",
+      "gitBlobSha": "d6e389441c9f98b0d3efe0826965d8db79fcd861",
+      "bytes": 1222266,
+      "sha256": "0c34750cc1ec11d72f3582e7c68cf6e453d319c7b435b0bfe9214ced39657918",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/Prediction%20Movie%20Revenue.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Prediction%20Movie%20Revenue.pdf",
+      "pageCount": 6,
+      "title": "Let's All Go To The Movies",
+      "shortTitle": "Predicting Movie Revenue",
+      "authors": [
+        "Joseph Wilkes",
+        "Jacob Rohde",
+        "Pauline Caussé"
+      ],
+      "documentDate": "2019",
+      "documentDateLabel": "Fall 2019",
+      "summary": "A comparison of random forests, nearest neighbors, and neural networks for predicting domestic and worldwide movie revenue.",
+      "topics": [
+        "Machine learning",
+        "Regression",
+        "Feature engineering"
+      ],
+      "priority": 4,
+      "featured": false,
+      "localPath": "shared-assets/academic-experience/final-results/prediction-movie-revenue.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/prediction-movie-revenue.png"
+    },
+    {
+      "slug": "non-trivial-evasion",
+      "originalFilename": "Non-Trivial Evasion.pdf",
+      "filename": "non-trivial-evasion.pdf",
+      "gitBlobSha": "d9aec2d73f2e4cc09a87f782d5937fabdf4702da",
+      "bytes": 920086,
+      "sha256": "51a9a5f3b28c433123d69c78b10b6ef896469f3387ba8d9c173503ba7ff97a50",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/Non-Trivial%20Evasion.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Non-Trivial%20Evasion.pdf",
+      "pageCount": 10,
+      "title": "Non-Trivial Evasion",
+      "shortTitle": "Non-Trivial Evasion",
+      "authors": [
+        "Taylor Gledhill",
+        "Joseph Wilkes",
+        "Raelynn Wonnacott",
+        "Nathan Nelson"
+      ],
+      "documentDate": "2021-04",
+      "documentDateLabel": "April 2021",
+      "summary": "Optimal control models for fox-and-rabbit evasion using linear-quadratic regulation and Pontryagin's maximum principle.",
+      "topics": [
+        "Optimal control",
+        "Dynamical systems",
+        "Mathematical modeling"
+      ],
+      "priority": 5,
+      "featured": false,
+      "localPath": "shared-assets/academic-experience/final-results/non-trivial-evasion.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/non-trivial-evasion.png"
+    },
+    {
+      "slug": "non-trivial-pursuit",
+      "originalFilename": "Non-Trivial Pursuit.pdf",
+      "filename": "non-trivial-pursuit.pdf",
+      "gitBlobSha": "0714cf7889ce98ba4fed757ae9f7fa973ce4f4a0",
+      "bytes": 394748,
+      "sha256": "6e401364fad46db13b88b35745d3c6e21fb1a4e5e8ef4a33937b1558e5fec0c5",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/Non-Trivial%20Pursuit.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Non-Trivial%20Pursuit.pdf",
+      "pageCount": 10,
+      "title": "Non-Trivial Pursuit",
+      "shortTitle": "Non-Trivial Pursuit",
+      "authors": [
+        "Taylor Gledhill",
+        "Joseph Wilkes",
+        "Raelynn Wonnacott",
+        "Nathan Nelson"
+      ],
+      "documentDate": "2020-12",
+      "documentDateLabel": "December 2020",
+      "summary": "Mathematical models of pursuit and evasion, testing how destination, terrain, prediction, and escape strategies shape a chase.",
+      "topics": [
+        "Dynamical systems",
+        "Numerical modeling",
+        "Pursuit and evasion"
+      ],
+      "priority": 6,
+      "featured": false,
+      "localPath": "shared-assets/academic-experience/final-results/non-trivial-pursuit.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/non-trivial-pursuit.png"
+    },
+    {
+      "slug": "literature-review",
+      "originalFilename": "Literature Review.pdf",
+      "filename": "literature-review.pdf",
+      "gitBlobSha": "0aa37b8938904bfd60118b8a7867b3c64da7e419",
+      "bytes": 126008,
+      "sha256": "f46ed2b477696c1b8f65ebcda5f33014b3f04b07d0c665f6576a962e3b65c1e5",
+      "rawUrl": "https://raw.githubusercontent.com/JoeyWilkes12/Final-Results/b0aadf613045ae7e8bd594db5f82f33eab739351/Literature%20Review.pdf",
+      "sourceUrl": "https://github.com/JoeyWilkes12/Final-Results/blob/b0aadf613045ae7e8bd594db5f82f33eab739351/Literature%20Review.pdf",
+      "pageCount": 16,
+      "title": "Evaluation of Childhood Computational Thinking with ScratchJR and Robot Toys: A Literature Review",
+      "shortTitle": "Childhood Computational Thinking",
+      "authors": [
+        "Joseph Wilkes"
+      ],
+      "documentDate": null,
+      "documentDateLabel": null,
+      "summary": "A literature review comparing ScratchJr and educational robots as tools for developing computational thinking in young children.",
+      "topics": [
+        "Computational thinking",
+        "Education",
+        "Literature review"
+      ],
+      "priority": 7,
+      "featured": false,
+      "localPath": "shared-assets/academic-experience/final-results/literature-review.pdf",
+      "previewPath": "shared-assets/academic-experience/final-results/previews/literature-review.png"
+    }
+  ],
+  "projects1": {
+    "title": "Applied Mathematics Projects",
+    "sourceUrl": "https://github.com/JoeyWilkes12/Projects1",
+    "sourceCommit": "a7de984715c16e2c073e39aa4cdfe3f26f2110d8",
+    "summary": "Python implementations of graph algorithms, numerical methods, Markov chains, nearest neighbors, Monte Carlo integration, and unit testing.",
+    "topics": [
+      "Python",
+      "Graph algorithms",
+      "Numerical methods",
+      "Markov chains",
+      "Unit testing"
+    ],
+    "projects": [
+      "Breadth-first search",
+      "Binary trees",
+      "Conditioning and stability",
+      "Differentiation",
+      "Drazin inverse",
+      "K-nearest neighbors",
+      "Markov chains",
+      "Monte Carlo integration",
+      "Newton's method",
+      "PageRank",
+      "Unit testing",
+      "Wordle solver"
+    ]
+  },
+  "sourceNotes": [
+    "Titles, author lists, and document dates were checked against the PDF title pages.",
+    "Document dates retain their source precision; the literature review has no date on its title page.",
+    "Publication status is not asserted. The archived Reservoir Thinning PDF is dated April 15, 2022.",
+    "All seven PDFs were downloaded from the source commit and verified against their Git blob SHA-1 hashes.",
+    "Projects1 descriptions are based on its README and file inventory; repository code was not executed."
+  ]
+}
