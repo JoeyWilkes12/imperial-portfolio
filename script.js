@@ -1,6 +1,29 @@
 (() => {
   "use strict";
 
+  const carousel = document.querySelector(".testimonial-carousel");
+  if (carousel) {
+    const slides = [...carousel.querySelectorAll(".testimonial-slide")];
+    const controls = carousel.querySelector(".testimonial-controls");
+    const position = carousel.querySelector(".testimonial-position");
+    let current = 0;
+    const show = (index) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => { slide.hidden = slideIndex !== current; });
+      position.textContent = `${current + 1} of ${slides.length}`;
+    };
+    if (slides.length > 1) {
+      show(0);
+      controls.hidden = false;
+      carousel.querySelector('[data-testimonial="previous"]').addEventListener("click", () => show(current - 1));
+      carousel.querySelector('[data-testimonial="next"]').addEventListener("click", () => show(current + 1));
+      controls.addEventListener("keydown", (event) => {
+        const offset = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+        if (offset) { event.preventDefault(); show(current + offset); }
+      });
+    }
+  }
+
   const root = document.documentElement;
   const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
   const themeToggle = document.querySelector(".theme-toggle");

@@ -589,11 +589,11 @@ test("all content and mobile navigation remain available with JavaScript disable
   const page = await context.newPage();
   try {
     for (const route of routes) {
-      await page.goto(new URL(route.path, testInfo.project.use.baseURL || "http://127.0.0.1:4173").href);
+      await page.goto(new URL(route.path, testInfo.project.use.baseURL || "http://127.0.0.1:4314").href);
       await expect(page.getByRole("heading", { level: 1, name: route.heading, exact: true })).toBeVisible();
       await assertNoOverflow(page, route.path);
     }
-    await page.goto("http://127.0.0.1:4173/resume/");
+    await page.goto(new URL("/resume/", testInfo.project.use.baseURL).href);
     await assertResume(page);
     if (testInfo.project.name === "mobile") {
       await page.locator(".mobile-nav summary").click();
@@ -612,7 +612,7 @@ test("system dark theme and the hamburger work with JavaScript disabled", async 
   const page = await context.newPage();
   try {
     for (const path of ["/", "/resume/"]) {
-      await page.goto(new URL(path, testInfo.project.use.baseURL || "http://127.0.0.1:4173").href);
+      await page.goto(new URL(path, testInfo.project.use.baseURL || "http://127.0.0.1:4314").href);
       await expect(page.getByRole("main")).toBeVisible();
       await expect(page.locator(".theme-toggle")).toBeHidden();
       const colors = await pageColors(page);

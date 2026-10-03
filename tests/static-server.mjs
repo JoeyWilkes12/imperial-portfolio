@@ -4,7 +4,11 @@ import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const port = Number(process.env.PORT || 4173);
+const port = Number(process.env.PORT || 4314);
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  console.error("PORT must be a whole number between 1 and 65535.");
+  process.exit(1);
+}
 const types = {
   ".css": "text/css; charset=utf-8",
   ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -19,7 +23,7 @@ const types = {
   ".xml": "application/xml; charset=utf-8"
 };
 
-createServer((request, response) => {
+const server = createServer((request, response) => {
   const url = new URL(request.url || "/", `http://${request.headers.host}`);
   let pathname = decodeURIComponent(url.pathname);
   let target = normalize(join(root, pathname));
@@ -42,6 +46,13 @@ createServer((request, response) => {
   } catch {
     response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("Not found");
   }
-}).listen(port, "127.0.0.1", () => {
+});
+server.on("error", error => {
+  console.error(error.code === "EADDRINUSE"
+    ? `Port ${port} is already in use. Stop the existing preview or choose another port: PORT=4414 npm run serve`
+    : error.message);
+  process.exit(1);
+});
+server.listen(port, "127.0.0.1", () => {
   console.log(`Imperial 3.0 at http://127.0.0.1:${port}`);
 });

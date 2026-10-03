@@ -1,0 +1,40 @@
+[
+  {
+    "id": "aaron-jacobson",
+    "quote": "I've never met someone more passionate and excited about data than Joey, and it was a real pleasure working with him. Joey was always eager to learn and take the next steps in our projects, and he did consistent great work even under difficult circumstances. Given the chance I would work with him again in a heartbeat.",
+    "source_files": [
+      "testimonials/01 - Varian/01 - varian.txt",
+      "testimonials/LinkedIn Public testimonials Screenshot 2026-07-29 at 4.59.58 PM.png"
+    ]
+  },
+  {
+    "id": "pouya-jafarian",
+    "quote": "As Joey's manager I found him to be dependable, diligent and technically strong. Joey is committed to doing great work and producing high quality outcomes, so he listens intently, asks insightful questions and collaborates effectively with his teammates. I always knew I could trust his honesty and his ability to deliver.",
+    "source_files": [
+      "testimonials/02 - Varian/02 - varian.txt",
+      "testimonials/LinkedIn Public testimonials Screenshot 2026-07-29 at 4.59.58 PM.png"
+    ]
+  },
+  {
+    "id": "dj-passey",
+    "quote": "I worked with Joey on a research project involving millions of simulations and large scale data analysis. Joey built a framework for generating and running experiments that interfaced with the resource manager on the supercomputer. He also automated much of the data visualization and analysis process. Both of these contributions culminated in a convenient, and efficient workflow for our team.\n\nBeyond technical accomplishments, Joey is dependable, kind and inclusive. His influence resulted in collaborative and supportive team culture. Working with Joey is exciting because he is passionate, drama-free because he is unpretentious and rewarding because he is committed.",
+    "source_files": [
+      "testimonials/03 - University/03 - university.txt",
+      "testimonials/LinkedIn Public testimonials Screenshot 2026-07-29 at 4.59.58 PM.png"
+    ]
+  },
+  {
+    "id": "additional-recommendation",
+    "quote": "Joey is one of my favorite humans. It's impossible to be around Joey and not be happy and optimistic about life. Our desks were close in the office, and I learned so much from Joey about data, math, Al, FinOps, Saas, and the world.\nOne thing I love about Joey is his curiosity. He wants to know how things work and is willing to put in the effort and data to solve complex problems.\nIn his time at Anglepoint, I've seen Joey grow from a new college grad to a trusted professional.\nBecause of his background in mathematics, development, and Al, he's got great breadth in the problems he works to solve.\nI'd consider Joey a great fit for any role that requires solving very complex problems. He thrives on the challenge, and he does it all with a smile and an amazing attitude.",
+    "source_files": [
+      "testimonials/05 - Marketing Manager/05 - Marketing Manager.txt"
+    ]
+  },
+  {
+    "id": "daniel-liebelt",
+    "quote": "Joey was one of the first people at Anglepoint who made me feel welcome, and he quickly became both a friend and someone I had a lot of respect for professionally. His dedication to the company was hard to miss there were major initiatives where he would put in an incredible amount of time, sometimes working through multiple late nights, while still staying level-headed and focused on doing the job well.\nWhat I appreciated most about Joey was that, despite that level of commitment, he was always kind, thoughtful, and easy to be around. We spent a lot of time talking about technology, high fantasy, and Dungeons & Dragons, and getting to know him outside of work made it even clearer how much he cares about his family, his friends, and the people around him. Any team would be lucky to have someone with his combination of dedication, intelligence, and character.",
+    "source_files": [
+      "testimonials/06 - IT/06 - IT.txt"
+    ]
+  }
+]

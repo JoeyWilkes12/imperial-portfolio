@@ -10,6 +10,7 @@ if (!existsSync(shared)) {
   process.exit(0);
 }
 copy(join(shared, 'portfolio/websites/projects.json'), join(root, 'content/websites.json'));
+copy(join(shared, 'testimonials/approved-quotes.json'), join(root, 'content/testimonials.json'));
 copy(join(shared, 'academic-experience/final-results/catalog.json'), join(root, 'content/academic.json'));
 const reports = join(shared, 'academic-experience/final-results');
 for (const name of readdirSync(reports).filter(name => name.endsWith('.pdf'))) copy(join(reports, name), join(root, 'assets/reports', name));
